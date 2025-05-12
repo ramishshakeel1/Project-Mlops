@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/ramis/Desktop/MLOPS/Project-Mlops/mlflow/539181078686748706/43d84b07f89e4ffc8906ca697b7c9815/artifacts
+end_time: 1747070416032
+entry_point_name: ''
+experiment_id: '539181078686748706'
+lifecycle_stage: active
+run_id: 43d84b07f89e4ffc8906ca697b7c9815
+run_name: lyrical-duck-30
+run_uuid: 43d84b07f89e4ffc8906ca697b7c9815
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747070333740
+status: 3
+tags: []
+user_id: ramis

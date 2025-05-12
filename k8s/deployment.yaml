@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlops-api-deployment
+  labels:
+    app: mlops-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mlops-api
+  template:
+    metadata:
+      labels:
+        app: mlops-api
+    spec:
+      containers:
+        - name: mlops-api-container
+          image: 21i1363/mlops-pipeline:latest
+          ports:
+            - containerPort: 5000  # Ensure the space after containerPort is correct
