@@ -1,31 +1,34 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'docker:latest'               // Use Docker image with Docker CLI
+            args '-v /var/run/docker.sock:/var/run/docker.sock'  // Mount host Docker socket
+        }
+    }
 
     environment {
-        DOCKERHUB_REPO = '21i1363/mlops-pipeline'
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials') // Replace with your DockerHub ID
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'dev', credentialsId: 'github-pat', url: 'https://github.com/ramishshakeel1/Project-Mlops.git'
+                git branch: 'dev', url: 'https://github.com/ramishshakeel1/Project-Mlops.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t ${DOCKERHUB_REPO}:latest ."
+                sh 'docker build -t 21i1363/mlops-pipeline:latest .'
             }
         }
 
         stage('Push to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh """
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker push ${DOCKERHUB_REPO}:latest
-                    """
-                }
+                sh """
+                echo "$DOCKERHUB_CREDENTIALS_PSW" | docker login -u "$DOCKERHUB_CREDENTIALS_USR" --password-stdin
+                docker push 21i1363/mlops-pipeline:latest
+                """
             }
         }
     }
