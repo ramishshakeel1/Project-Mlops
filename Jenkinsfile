@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials') 
         DOCKERHUB_REPO = '21i1363/mlops-pipeline'
     }
 
@@ -15,18 +14,17 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.build("${DOCKERHUB_REPO}")
-                }
+                sh "docker build -t ${DOCKERHUB_REPO}:latest ."
             }
         }
 
         stage('Push to Docker Hub') {
             steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
-                        docker.image("${DOCKERHUB_REPO}").push('latest')
-                    }
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh """
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push ${DOCKERHUB_REPO}:latest
+                    """
                 }
             }
         }
