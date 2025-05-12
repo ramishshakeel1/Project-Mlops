@@ -1,0 +1,61 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: project-mlops-postgres-1
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - airflow_network
+
+  airflow-webserver:
+    image: apache/airflow:2.5.0
+    container_name: airflow-webserver
+    environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@project-mlops-postgres-1:5432/airflow
+      - AIRFLOW__CORE__FERNET_KEY=K9ffgphLXva94COJ_Zv7394f7fO9hx8DFxESEhNNYVk=
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__WEBSERVER__RBAC=True
+      - AIRFLOW__WEBSERVER__WEB_SERVER_PORT=8080
+    ports:
+      - "8080:8080"
+    networks:
+      - airflow_network
+    depends_on:
+      - postgres
+
+  airflow-scheduler:
+    image: apache/airflow:2.5.0
+    container_name: airflow-scheduler
+    environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@project-mlops-postgres-1:5432/airflow
+      - AIRFLOW__CORE__FERNET_KEY=K9ffgphLXva94COJ_Zv7394f7fO9hx8DFxESEhNNYVk=
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+    networks:
+      - airflow_network
+    depends_on:
+      - postgres
+
+  airflow-worker:
+    image: apache/airflow:2.5.0
+    container_name: airflow-worker
+    environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@project-mlops-postgres-1:5432/airflow
+      - AIRFLOW__CORE__FERNET_KEY=K9ffgphLXva94COJ_Zv7394f7fO9hx8DFxESEhNNYVk=
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+    networks:
+      - airflow_network
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+
+networks:
+  airflow_network:
+    driver: bridge

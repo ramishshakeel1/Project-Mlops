@@ -4,16 +4,9 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-pat', branch: 'dev', url: 'https://github.com/Shaheer-Haq/Project_MLOps.git'
+                git credentialsId: 'github-pat', branch: 'dev', url: 'https://github.com/ramishshakeel1/Project-Mlops.git'
             }
         }
 
-        stage('Pull Docker Image') {
-            steps {
-                script {
-                    docker.pull('shaheerhaq/mlops-pipeline')
-                }
-            }
-        }
-    }
+    }S
 }

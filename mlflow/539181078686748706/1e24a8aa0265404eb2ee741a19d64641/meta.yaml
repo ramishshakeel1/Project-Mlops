@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/ramis/Desktop/MLOPS/Project-Mlops/mlflow/539181078686748706/1e24a8aa0265404eb2ee741a19d64641/artifacts
+end_time: 1747070548859
+entry_point_name: ''
+experiment_id: '539181078686748706'
+lifecycle_stage: active
+run_id: 1e24a8aa0265404eb2ee741a19d64641
+run_name: rogue-colt-679
+run_uuid: 1e24a8aa0265404eb2ee741a19d64641
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747070466974
+status: 3
+tags: []
+user_id: ramis
