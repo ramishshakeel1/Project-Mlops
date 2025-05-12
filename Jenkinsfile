@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-pat', git branch: 'dev', url: 'https://github.com/ramishshakeel1/Project-Mlops.git'
+                git branch: 'dev', credentialsId: 'github-pat', url: 'https://github.com/ramishshakeel1/Project-Mlops.git'
             }
         }
 
